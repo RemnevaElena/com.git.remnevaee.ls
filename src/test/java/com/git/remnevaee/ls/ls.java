@@ -26,5 +26,5 @@ public class ls {
         final long timeModified = file.lastModified();
         SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
         return sdf.format(new Date(timeModified));
-    }
+    },
 }
