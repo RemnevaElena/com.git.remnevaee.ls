@@ -10,7 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class ls {
-    public static void main(String[] args) {}
+
 
     protected static final class ProgramFile {
         private final File file;
@@ -44,25 +44,35 @@ public class ls {
             return clearSize + " " + unit[count];
         }
 
-        protected String FilePermissions() {
-            StringBuffer sb = new StringBuffer();
+        protected String FilePermissions() throws IOException {
+            StringBuffer strBuf = new StringBuffer();
             if (file.canWrite()) {
-                sb.append("Write ");
+                strBuf.append("w");
             } else {
-                sb.append("NoWrite ");
+                strBuf.append("-");
             }
             if (file.canRead()) {
-                sb.append("Read ");
+                strBuf.append("r");
             } else {
-                sb.append("NoRead ");
+                strBuf.append("-");
             }
             if (file.canExecute()) {
-                sb.append("Execute ");
+                strBuf.append("x");
             } else {
-                sb.append("NoWriteExecute");
+                strBuf.append("-");
             }
-            return sb.toString();
+            return strBuf.toString();
         }
+        protected String FileBitMask() throws IOException {
+            int strBuf = 0;
+            if (file.canWrite()) strBuf+=10;
+            if (file.canRead()) strBuf+=100;
+            if (file.canExecute()) strBuf+=1;
+            String result = String.valueOf(strBuf);
+            return result;
+        }
+        public static void main(String[] args) throws IOException {
 
+        }
     }
 }
