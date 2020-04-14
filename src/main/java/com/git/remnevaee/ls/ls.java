@@ -72,7 +72,30 @@ public class ls {
             return result;
         }
         public static void main(String[] args) throws IOException {
-
+            String outputFileName = "";
+            ArrayList<String> flags = new ArrayList<>();
+            for (int i = 0; i < args.length - 1; i++) {
+                switch (args[i]) {
+                    case "-l":
+                        flags.add("-l");
+                        break;
+                    case "-h":
+                        flags.add("-h");
+                        break;
+                    case "-r":
+                        flags.add("-r");
+                        break;
+                    case "-o":
+                        flags.add("-o");
+                        outputFileName = args[i + 1];
+                        break;
+                }
+            }
+            if (args.length == 0) {
+                System.out.println("ls [-l] [-h] [-r] [-o output.file] directory_or_file");
+                System.exit(0);
+            }
+            String d_or_f = args[args.length - 1];
         }
     }
 }
