@@ -1,5 +1,7 @@
 package com.git.remnevaee.ls;
 
+import com.sun.org.apache.xpath.internal.objects.XString;
+
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -71,7 +73,7 @@ public class ls {
             String result = String.valueOf(strBuf);
             return result;
         }
-        public static void main(String[] args) throws IOException {
+        public void main(String[] args) throws IOException {
             String outputFileName = "";
             ArrayList<String> flags = new ArrayList<>();
             for (int i = 0; i < args.length - 1; i++) {
@@ -95,7 +97,22 @@ public class ls {
                 System.out.println("ls [-l] [-h] [-r] [-o output.file] directory_or_file");
                 System.exit(0);
             }
-            String d_or_f = args[args.length - 1];
+            ArrayList<String> rez = new ArrayList<>();
+            File d_or_f= new File(args[args.length - 1]);
+            if (d_or_f.isFile()) {
+                for (int i = 0; i < flags.size(); i++) {
+                    if (flags.get(i) == "-l") {
+                        ProgramFile pf = new ProgramFile(d_or_f);
+                        String name = Name(d_or_f);
+
+                    }
+                }
+            }
+
+        }
+
+        private String Name(File d_or_f) {
+            return file.getName();
         }
     }
 }
