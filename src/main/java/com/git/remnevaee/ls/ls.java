@@ -1,5 +1,6 @@
 package com.git.remnevaee.ls;
 
+import com.sun.org.apache.xpath.internal.objects.XNull;
 import com.sun.org.apache.xpath.internal.objects.XString;
 
 import java.io.File;
@@ -93,6 +94,7 @@ public class ls {
                         break;
                 }
             }
+            //Map<String, String> map = new Map<>();
             if (args.length == 0) {
                 System.out.println("ls [-l] [-h] [-r] [-o output.file] directory_or_file");
                 System.exit(0);
@@ -104,15 +106,63 @@ public class ls {
                     if (flags.get(i) == "-l") {
                         ProgramFile pf = new ProgramFile(d_or_f);
                         String name = Name(d_or_f);
-
+                        rez.add(name);
+                        rez.add(pf.FileBitMask());
+                        rez.add(pf.LastModificate());
+                        rez.add(pf.СlearSize());
+                    }
+                    if (flags.contains("-h")) {
+                        ProgramFile pf = new ProgramFile(d_or_f);
+                        String name = Name(d_or_f);
+                        rez.add(name);
+                        rez.add(pf.ClearSize());
+                        rez.add(pf.FilePermissions());
+                    }
+                }
+            }
+            else if (d_or_f.isDirectory()) {
+                for (int i = 0; i < flags.size(); i++) {
+                    for (File file : d_or_f.listFiles()) {
+                        if (file.isFile()) {
+                            for (int j = 0; j < flags.size(); j++) {
+                                if (flags.get(i) == "-l") {
+                                    ProgramFile pf = new ProgramFile(d_or_f);
+                                    String name = Name(d_or_f);
+                                    rez.add(name);
+                                    rez.add(pf.FileBitMask());
+                                    rez.add(pf.LastModificate());
+                                    rez.add(pf.СlearSize());
+                                }
+                                if (flags.contains("-h")) {
+                                    ProgramFile pf = new ProgramFile(d_or_f);
+                                    String name = Name(d_or_f);
+                                    rez.add(name);
+                                    rez.add(pf.ClearSize());
+                                    rez.add(pf.FilePermissions());
+                                }
+                            }
+                        }
                     }
                 }
             }
 
-        }
+            assert outputFileName != null;
+    }
+
 
         private String Name(File d_or_f) {
-            return file.getName();
+            return d_or_f.getName();
+        }
+
+        private String ClearSize() {
+            long clearSize = Size();
+            String[] unit = new String[]{"B", "Kb", "Mb", "Gb"};
+            int count = 0;
+            while (clearSize >= 1024) {
+                clearSize /= 1024;
+                count++;
+            }
+            return clearSize + " " + unit[count];
+        }
         }
     }
-}
