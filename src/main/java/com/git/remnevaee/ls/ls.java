@@ -75,7 +75,7 @@ public class ls {
             return result;
         }
         public void main(String[] args) throws IOException {
-            String outputFileName = "";
+            String outputFileName = null;
             ArrayList<String> flags = new ArrayList<>();
             for (int i = 0; i < args.length - 1; i++) {
                 switch (args[i]) {
@@ -111,7 +111,7 @@ public class ls {
                         rez.add(pf.LastModificate());
                         rez.add(pf.СlearSize());
                     }
-                    if (flags.contains("-h")) {
+                    if (flags.get(i) == "-h") {
                         ProgramFile pf = new ProgramFile(d_or_f);
                         String name = Name(d_or_f);
                         rez.add(name);
@@ -125,7 +125,7 @@ public class ls {
                     for (File file : d_or_f.listFiles()) {
                         if (file.isFile()) {
                             for (int j = 0; j < flags.size(); j++) {
-                                if (flags.get(i) == "-l") {
+                                if (flags.get(j) == "-l") {
                                     ProgramFile pf = new ProgramFile(d_or_f);
                                     String name = Name(d_or_f);
                                     rez.add(name);
@@ -133,7 +133,7 @@ public class ls {
                                     rez.add(pf.LastModificate());
                                     rez.add(pf.СlearSize());
                                 }
-                                if (flags.contains("-h")) {
+                                if (flags.get(j) == "-h") {
                                     ProgramFile pf = new ProgramFile(d_or_f);
                                     String name = Name(d_or_f);
                                     rez.add(name);
@@ -147,6 +147,11 @@ public class ls {
             }
 
             assert outputFileName != null;
+            for (int i = 0; i < flags.size(); i++) {
+                if (flags.get(i) == "-o" && (new File(outputFileName).isFile())) {
+                    
+                }
+            }
     }
 
 
