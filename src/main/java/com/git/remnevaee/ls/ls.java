@@ -14,7 +14,7 @@ import java.util.*;
 
 public class ls {
         public File file;
-
+        //конструктор
         public ls(File file) {
             this.file = file;
         }
@@ -28,13 +28,13 @@ public class ls {
             return file.getName();
         }
 
-        public String LastModificate() {
+        public String LastModificate() {//время последней модификации
             final long timeModified = file.lastModified();
             SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
             return sdf.format(new Date(timeModified));
         }
 
-        public String СlearSize() {
+        public String СlearSize() {//размер в нормальном формате
             long clearSize = Size();
             String[] unit = new String[]{"B", "Kb", "Mb", "Gb"};
             int count = 0;
@@ -45,7 +45,7 @@ public class ls {
             return clearSize + " " + unit[count];
         }
 
-        public String FilePermissions() throws IOException {
+        public String FilePermissions() throws IOException { //права на выполнение/чтение/запись в иде rbk
             StringBuffer strBuf = new StringBuffer();
             if (file.canWrite()) {
                 strBuf.append("w");
@@ -65,7 +65,7 @@ public class ls {
             return strBuf.toString();
         }
 
-        public String FileBitMask() throws IOException {
+        public String FileBitMask() throws IOException {//права на выполнение/чтение/запись в виде битовой маски
             int strBuf = 0;
             if (file.canWrite()) strBuf += 10;
             if (file.canRead()) strBuf += 100;
