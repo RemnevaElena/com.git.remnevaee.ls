@@ -13,30 +13,28 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class ls {
+        public File file;
 
-
-    protected static final class ProgramFile {
-        private final File file;
-
-        protected ProgramFile(File file) {
+        public ls(File file) {
             this.file = file;
         }
 
-        private long Size() {
+
+        public long Size() {
             return file.length();
         }
 
-        private String Name() {
+        public String Name() {
             return file.getName();
         }
 
-        protected String LastModificate() {
+        public String LastModificate() {
             final long timeModified = file.lastModified();
             SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
             return sdf.format(new Date(timeModified));
         }
 
-        protected String СlearSize() {
+        public String СlearSize() {
             long clearSize = Size();
             String[] unit = new String[]{"B", "Kb", "Mb", "Gb"};
             int count = 0;
@@ -47,7 +45,7 @@ public class ls {
             return clearSize + " " + unit[count];
         }
 
-        protected String FilePermissions() throws IOException {
+        public String FilePermissions() throws IOException {
             StringBuffer strBuf = new StringBuffer();
             if (file.canWrite()) {
                 strBuf.append("w");
@@ -66,108 +64,25 @@ public class ls {
             }
             return strBuf.toString();
         }
-        protected String FileBitMask() throws IOException {
+
+        public String FileBitMask() throws IOException {
             int strBuf = 0;
-            if (file.canWrite()) strBuf+=10;
-            if (file.canRead()) strBuf+=100;
-            if (file.canExecute()) strBuf+=1;
+            if (file.canWrite()) strBuf += 10;
+            if (file.canRead()) strBuf += 100;
+            if (file.canExecute()) strBuf += 1;
             String result = String.valueOf(strBuf);
             return result;
         }
-        public void main(String[] args) throws IOException {
-            String outputFileName = null;
-            ArrayList<String> flags = new ArrayList<>();
-            for (int i = 0; i < args.length - 1; i++) {
-                switch (args[i]) {
-                    case "-l":
-                        flags.add("-l");
-                        break;
-                    case "-h":
-                        flags.add("-h");
-                        break;
-                    case "-r":
-                        flags.add("-r");
-                        break;
-                    case "-o":
-                        flags.add("-o");
-                        outputFileName = args[i + 1];
-                        break;
-                }
-            }
-            //Map<String, String> map = new Map<>();
-            if (args.length == 0) {
-                System.out.println("ls [-l] [-h] [-r] [-o output.file] directory_or_file");
-                System.exit(0);
-            }
-            ArrayList<String> rez = new ArrayList<>();
-            File d_or_f= new File(args[args.length - 1]);
-            if (d_or_f.isFile()) {
-                for (int i = 0; i < flags.size(); i++) {
-                    if (flags.get(i) == "-l") {
-                        ProgramFile pf = new ProgramFile(d_or_f);
-                        String name = Name(d_or_f);
-                        rez.add(name);
-                        rez.add(pf.FileBitMask());
-                        rez.add(pf.LastModificate());
-                        rez.add(pf.СlearSize());
-                    }
-                    if (flags.get(i) == "-h") {
-                        ProgramFile pf = new ProgramFile(d_or_f);
-                        String name = Name(d_or_f);
-                        rez.add(name);
-                        rez.add(pf.ClearSize());
-                        rez.add(pf.FilePermissions());
-                    }
-                }
-            }
-            else if (d_or_f.isDirectory()) {
-                for (int i = 0; i < flags.size(); i++) {
-                    for (File file : d_or_f.listFiles()) {
-                        if (file.isFile()) {
-                            for (int j = 0; j < flags.size(); j++) {
-                                if (flags.get(j) == "-l") {
-                                    ProgramFile pf = new ProgramFile(d_or_f);
-                                    String name = Name(d_or_f);
-                                    rez.add(name);
-                                    rez.add(pf.FileBitMask());
-                                    rez.add(pf.LastModificate());
-                                    rez.add(pf.СlearSize());
-                                }
-                                if (flags.get(j) == "-h") {
-                                    ProgramFile pf = new ProgramFile(d_or_f);
-                                    String name = Name(d_or_f);
-                                    rez.add(name);
-                                    rez.add(pf.ClearSize());
-                                    rez.add(pf.FilePermissions());
-                                }
-                            }
-                        }
-                    }
-                }
-            }
 
-            assert outputFileName != null;
-            for (int i = 0; i < flags.size(); i++) {
-                if (flags.get(i) == "-o" && (new File(outputFileName).isFile())) {
-                    
-                }
-            }
+
+    public String ClearSize() {
+        long clearSize = Size();
+        String[] unit = new String[]{"B", "Kb", "Mb", "Gb"};
+        int count = 0;
+        while (clearSize >= 1024) {
+            clearSize /= 1024;
+            count++;
+        }
+        return clearSize + " " + unit[count];
     }
-
-
-        private String Name(File d_or_f) {
-            return d_or_f.getName();
-        }
-
-        private String ClearSize() {
-            long clearSize = Size();
-            String[] unit = new String[]{"B", "Kb", "Mb", "Gb"};
-            int count = 0;
-            while (clearSize >= 1024) {
-                clearSize /= 1024;
-                count++;
-            }
-            return clearSize + " " + unit[count];
-        }
-        }
-    }
+}
