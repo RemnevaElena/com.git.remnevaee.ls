@@ -1,5 +1,9 @@
 package com.git.remnevaee.ls;
 
+import org.kohsuke.args4j.CmdLineException;
+import org.kohsuke.args4j.CmdLineParser;
+import org.kohsuke.args4j.Option;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -7,7 +11,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class main {
+
     public void main(String[] args) throws IOException {
+        Ls ls = new Ls();
+        CmdLineParser parser = new CmdLineParser(ls);
+        try {
+            parser.parseArgument(args);
+        } catch (CmdLineException e) {
+            e.printStackTrace();
+        }
         String outputFileName = null;
         ArrayList<String> flags = new ArrayList<>();
         for (int i = 0; i < args.length - 1; i++) { //нахожу, какой флаг мне надо выполнить
@@ -33,34 +45,8 @@ public class main {
         }
         ArrayList<String> rez1 = new ArrayList<>();//для того, чтоб запаисывать туда, что я узнала о директории/директории
         File d_or_f = new File(args[args.length - 1]); //последний элемент в массиве, директория или файл
-        ls test = new ls(d_or_f);
-        if (d_or_f.isFile()) { //если файл, то в листочек записываем инфу у нем, если выпал флаг -l -h
-            if (flags.contains("-l")) {
-                rez1.add(test.Name());
-                rez1.add(test.FileBitMask());
-                rez1.add(test.LastModificate());
-                rez1.add(test.СlearSize());
-            } else if (flags.contains("-h")) {
-                rez1.add(test.Name());
-                rez1.add(test.ClearSize());
-                rez1.add(test.FilePermissions());
-            }
-        } else if (d_or_f.isDirectory()) {//если директория, то тоже  в листочек записываем инфу у ней, если выпал флаг -l -h
-            for (File file : d_or_f.listFiles()) {
-                if (file.isFile()) {
-                    if (flags.contains("-l")) {
-                        rez1.add(test.Name());
-                        rez1.add(test.FileBitMask());
-                        rez1.add(test.LastModificate());
-                        rez1.add(test.СlearSize());
-                    } else if (flags.contains("-h")) {
-                        rez1.add(test.Name());
-                        rez1.add(test.ClearSize());
-                        rez1.add(test.FilePermissions());
-                    }
-                }
-            }
-        }
+        Ls test = new Ls(d_or_f);
+
         assert outputFileName != null;
         for (int i = 0; i < flags.size(); i++) { // здесь вывод или в файл или в консоль результата
             if (flags.get(i) == "-o" && (new File(outputFileName).isFile())) {
