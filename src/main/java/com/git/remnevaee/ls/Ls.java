@@ -17,18 +17,22 @@ import java.util.*;
 public class Ls {
         public File file;
         //конструктор
-        public Ls(File file) {
+        public Ls() {
             this.file = file;
         }
 
         @Option(name = "-h", metaVar = "human-readable")
-        private int hr = 1;
+        private String hr = null;
+
         @Option(name = "-l", metaVar = "long")
-        private int l = 1;
+        private String l = null;
+
         @Option(name = "-r", metaVar = "rewerse")
-        private String rewerse;
+        private String rewerse = null;
+
         @Option(name = "-o", metaVar = "output")
-        private String outputFileName = "";
+        private String outputFileName = null;
+
         @Argument
         private String[] arguments;
 
@@ -113,14 +117,27 @@ public class Ls {
                         rez1.add(LastModificate());
                         rez1.add(СlearSize());
                     }
-                }
-            int n = 0;
-            while (n != rez1.size() - 1) {
-                strBuf.append(rez1 + " ");
-                if (n % 4 == 0 && n != 0) strBuf.append("\n");
-                n++;
             }
-            if (outputFileName.equals("")) {
+            if (rewerse != null) {
+                int n = rez1.size() - 1;
+                while (n >= 0) {
+                    int k = n - 3;
+                    while (k != n) {
+                        strBuf.append(rez1.get(k) + " ");
+                        k++;
+                    }
+                    strBuf.append("\n");
+                    n -= 4;
+                }
+            } else {
+                int n = 0;
+                while (n != rez1.size() - 1) {
+                    strBuf.append(rez1.get(n) + " ");
+                    if (n % 4 == 0 && n != 0) strBuf.append("\n");
+                    n++;
+                }
+            }
+            if (outputFileName != null) {
                 System.out.println(strBuf.toString());
             }
             else {
@@ -149,13 +166,26 @@ public class Ls {
                     }
                 }
             }
-            int n = 0;
-            while (n != rez1.size() - 1) {
-                strBuf.append(rez1 + " ");
-                if (n % 3 == 0 && n != 0) strBuf.append("\n");
-                n++;
+            if (rewerse != null) {
+                int n = rez1.size() - 1;
+                while (n >= 0) {
+                    int k = n - 2;
+                    while (k != n) {
+                        strBuf.append(rez1.get(k) + " ");
+                        k++;
+                    }
+                    strBuf.append("\n");
+                    n -= 3;
+                }
+            } else {
+                int n = 0;
+                while (n != rez1.size() - 1) {
+                    strBuf.append(rez1 + " ");
+                    if (n % 3 == 0 && n != 0) strBuf.append("\n");
+                    n++;
+                }
             }
-            if (outputFileName.equals("")) {
+            if (outputFileName != null) {
                 System.out.println(strBuf.toString());
             }
             else {
@@ -168,11 +198,22 @@ public class Ls {
             }
         }
 
-        private String rewerse() throws Exception {
-
-            return null;
+    public void launch() throws IOException {
+        if (hr != null) {
+            try {
+                humanreadable();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
-
+        else if (l != null) {
+            try {
+                long1();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 //        private void writeText() throws Exception {
 //            if (outputFileName.equals("")) {
 //                if (hr == 1) System.out.println();
